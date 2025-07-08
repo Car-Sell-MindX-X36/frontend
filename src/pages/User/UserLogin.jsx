@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, TextField, Button } from '@mui/material'
 import { Link } from 'react-router-dom'
-import '../../styles/UserLogin.css'
+import '../../styles/Login.css'
 
 const UserLogin = () => {
   return (

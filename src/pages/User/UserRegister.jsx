@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { TextField, Button, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { Link } from 'react-router-dom'
-import '../../styles/UserRegister.css'
+import '../../styles/Register.css'
 
 const UserRegister = () => {
   const [gender, setGender] = useState('')
@@ -20,7 +20,7 @@ const UserRegister = () => {
           <TextField label='Password' variant='standard' type='password' />
           <TextField label='Confirm Password' variant='standard' type='password' />
           <TextField label='Address' variant='standard' />
-          <TextField label='Phone Number' vairant='standard' />
+          <TextField label='Phone Number' variant='standard' />
         </div>
         <div className="gender-dob">
           <FormControl sx={{ width: '50%'}} variant='standard'>
@@ -31,7 +31,8 @@ const UserRegister = () => {
               <MenuItem value='Women'>Women</MenuItem>
             </Select>
           </FormControl>
-          <TextField variant='standard' type='date' />
+          <TextField label='DOB' variant='standard' type='date' />
+          <TextField label='Note' variant='standard' />
         </div>
         <div className="register-submit">
           <span>Already have an account? <Link to='/login'>Login</Link></span>
