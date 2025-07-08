@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { TextField, Button, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import { Link } from 'react-router-dom'
+import '../../styles/UserRegister.css'
 
 const UserRegister = () => {
   const [gender, setGender] = useState('')
@@ -11,23 +12,31 @@ const UserRegister = () => {
 
   return (
     <>
-      <Box>
+      <Box className='register-form'>
         <h1>Register</h1>
-        <TextField label='Full Name' variant='standard'  />
-        <TextField label='Email' variant='standard' />
-        <TextField label='Password' variant='standard' type='password' />
-        <TextField label='Phone Number' vairant='standard' />
-        <FormControl fullWidth>
-          <InputLabel id='gender-select-label'>Gender</InputLabel>
-          <Select labelId='gender-select-label' id='gender-select' value={gender} label='Gender' onChange={handleChangeGender}>
-            <MenuItem value='Male'>Male</MenuItem>
-            <MenuItem value='Women'>Women</MenuItem>
-          </Select>
-        </FormControl>
-        <TextField variant='standard' type='date' />
-        <TextField label='Address' variant='standard' />
-        <span>Already have an account? <Link to='/login'>Login</Link></span>
-        <Button variant='contained'>Register</Button>
+        <div className="form">
+          <TextField label='Full Name' variant='standard'  />
+          <TextField label='Email' variant='standard' />
+          <TextField label='Password' variant='standard' type='password' />
+          <TextField label='Confirm Password' variant='standard' type='password' />
+          <TextField label='Address' variant='standard' />
+          <TextField label='Phone Number' vairant='standard' />
+        </div>
+        <div className="gender-dob">
+          <FormControl sx={{ width: '50%'}} variant='standard'>
+            <InputLabel id='gender-select-label'>Gender</InputLabel>
+            <Select labelId='gender-select-label' id='gender-select' value={gender} label='Gender' onChange={handleChangeGender}>
+              <MenuItem value=''>Select</MenuItem>
+              <MenuItem value='Male'>Male</MenuItem>
+              <MenuItem value='Women'>Women</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField variant='standard' type='date' />
+        </div>
+        <div className="register-submit">
+          <span>Already have an account? <Link to='/login'>Login</Link></span>
+          <Button variant='contained'>Register</Button>
+        </div>
       </Box>
     </>
   )
