@@ -6,6 +6,27 @@ import '../../styles/Register.css'
 const AdminRegister = () => {
   const [gender, setGender] = useState('')
   const [manager, setManager] = useState('')
+  const [role, setRole] = useState('')
+  const [data, setData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    phoneNumber: '',
+    address: '',
+    manager: '',
+    gender: '',
+    dob: ''
+  })
+  const [err, setErr] = useState({})
+
+  const handleRoleSelect = (role) => {
+    setRole(role)
+    if (role === 'Hr' || role === 'Manager') {
+      setData({ ...data, manager: '' })
+    }
+    setErr({ ...err, manager: '' })
+  }
 
   const handleChangeGender = (e) => {
     setGender(e.target.value)
@@ -19,9 +40,18 @@ const AdminRegister = () => {
     <>
       <Box className='register-form'>
         <ButtonGroup variant='contained' aria-label='position admin register'>
-          <Button>HR</Button>
+          {/* <Button>Hr</Button>
           <Button>Manager</Button>
-          <Button>Agent</Button>
+          <Button>Agent</Button> */}
+          {['HR', 'Manager', 'Agent'].map((roleOption) => (
+            <Button
+              key={roleOption}
+              type="button"
+              onClick={() => handleRoleSelect(roleOption)}
+            >
+              {roleOption}
+            </Button>
+          ))}
         </ButtonGroup>
         <h1>Admin Register</h1>
         <div className="form">
@@ -31,14 +61,22 @@ const AdminRegister = () => {
           <TextField label='Confirm Password' variant='standard' type='password' />
           <TextField label='Phone Number' variant='standard' />
           <TextField label='Address' variant='standard' />
-          <FormControl fullWidth variant='standard'>
-            <InputLabel id='manager-select-label'>Manager</InputLabel>
-            <Select labelId='manager-select-label' id='manager-select' value={manager} label='Manager' onChange={handleChangeManager}>
-              <MenuItem value=''>Select</MenuItem>
-              <MenuItem value='Manager 1'>Manager 1</MenuItem>
-              <MenuItem value='Manager 2'>Manager 2</MenuItem>
-            </Select>
-          </FormControl>
+          {role === 'Agent' && (
+            <FormControl fullWidth variant="standard" error={!!err.manager}>
+              <InputLabel id="manager-select-label">Manager</InputLabel>
+              <Select
+                labelId="manager-select-label"
+                id="manager-select"
+                name="manager"
+                value={data.manager}
+                label="Manager"
+              >
+                <MenuItem value="">Select</MenuItem>
+                <MenuItem value="Manager 1">Manager 1</MenuItem>
+                <MenuItem value="Manager 2">Manager 2</MenuItem>
+              </Select>
+            </FormControl>
+          )}
         </div>
         <div className="gender-dob">
           <FormControl sx={{ width: '50%' }} variant='standard'>
