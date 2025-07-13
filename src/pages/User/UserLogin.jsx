@@ -7,10 +7,10 @@ const UserLogin = () => {
   return (
     <>
         <Box className='login-form'>
-            <h1>Login</h1>
+            <h1>User Login</h1>
             <div className="form">
-              <TextField label='Email' variant='standard' />
-              <TextField label='Password' variant='standard' type='password' />
+              <TextField label='Email' variant='filled' />
+              <TextField label='Password' variant='filled' type='password' />
             </div>
             <div className="login-submit">
               <span>Forgot password? <Link to='#'>Click here</Link></span>

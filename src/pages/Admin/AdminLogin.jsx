@@ -8,14 +8,13 @@ const AdminLogin = () => {
     <>
       <Box className='login-form'>
         <ButtonGroup variant='contained' aria-label='position admin register'>
-          <Button>HR</Button>
           <Button>Manager</Button>
           <Button>Agent</Button>
         </ButtonGroup>
         <h1>Admin login</h1>
         <div className="form">
-          <TextField label='email' variant='standard' />
-          <TextField label='password' variant='standard' type='password' />
+          <TextField label='email' variant='filled' />
+          <TextField label='password' variant='filled' type='password' />
         </div>
         <div className="login-submit">
           <span>Forgot password? <Link to='#'>Click here</Link></span>

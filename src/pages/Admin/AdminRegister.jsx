@@ -22,7 +22,7 @@ const AdminRegister = () => {
 
   const handleRoleSelect = (role) => {
     setRole(role)
-    if (role === 'Hr' || role === 'Manager') {
+    if (role === 'Manager') {
       setData({ ...data, manager: '' })
     }
     setErr({ ...err, manager: '' })
@@ -43,7 +43,7 @@ const AdminRegister = () => {
           {/* <Button>Hr</Button>
           <Button>Manager</Button>
           <Button>Agent</Button> */}
-          {['HR', 'Manager', 'Agent'].map((roleOption) => (
+          {['Manager', 'Agent'].map((roleOption) => (
             <Button
               key={roleOption}
               type="button"
@@ -55,14 +55,14 @@ const AdminRegister = () => {
         </ButtonGroup>
         <h1>Admin Register</h1>
         <div className="form">
-          <TextField label='Full Name' variant='standard' />
-          <TextField label='Email' variant='standard' />
-          <TextField label='Password' variant='standard' type='password' />
-          <TextField label='Confirm Password' variant='standard' type='password' />
-          <TextField label='Phone Number' variant='standard' />
-          <TextField label='Address' variant='standard' />
+          <TextField label='Full Name' variant='filled' />
+          <TextField label='Email' variant='filled' />
+          <TextField label='Password' variant='filled' type='password' />
+          <TextField label='Confirm Password' variant='filled' type='password' />
+          <TextField label='Phone Number' variant='filled' />
+          <TextField label='Address' variant='filled' />
           {role === 'Agent' && (
-            <FormControl fullWidth variant="standard" error={!!err.manager}>
+            <FormControl fullWidth variant="filled" error={!!err.manager}>
               <InputLabel id="manager-select-label">Manager</InputLabel>
               <Select
                 labelId="manager-select-label"
@@ -79,7 +79,7 @@ const AdminRegister = () => {
           )}
         </div>
         <div className="gender-dob">
-          <FormControl sx={{ width: '50%' }} variant='standard'>
+          <FormControl sx={{ width: '50%' }} variant='filled'>
             <InputLabel id='gender-select-label'>Gender</InputLabel>
             <Select labelId='gender-select-label' id='gender-select' value={gender} label='Gender' onChange={handleChangeGender}>
               <MenuItem value=''>Select</MenuItem>
@@ -87,7 +87,7 @@ const AdminRegister = () => {
               <MenuItem value='Women'>Women</MenuItem>
             </Select>
           </FormControl>
-          <TextField variant='standard' type='date' />
+          <TextField variant='filled' type='date' />
         </div>
         <div className="register-submit">
           <span>Already have an account? <Link to='/admin-login'>Login</Link></span>

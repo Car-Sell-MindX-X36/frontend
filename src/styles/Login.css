@@ -7,6 +7,10 @@
     height: 100vh;
 }
 
+.title {
+    padding: 2rem 0;
+}
+
 .form {
     display: flex;
     flex-direction: column;
