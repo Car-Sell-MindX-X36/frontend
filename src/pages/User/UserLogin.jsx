@@ -1,37 +1,5 @@
-// import React, { use } from 'react'
-// import { Box, TextField, Button } from '@mui/material'
-// import { Link } from 'react-router-dom'
-// import '../../styles/Login.css'
-
-// const UserLogin = () => {
-//   const [formData, setFormData] = useState({
-//     email: '',
-//     password: ''
-//   })
-
-
-//   return (
-//     <>
-//         <Box className='login-form'>
-//             <h1>User Login</h1>
-//             <div className="form">
-//               <TextField label='Phone Number or Email' variant='filled' />
-//               <TextField label='Password' variant='filled' type='password' />
-//             </div>
-//             <div className="login-submit">
-//               <span>Forgot password? <Link to='#'>Click here</Link></span>
-//               <Button variant='contained'>Login</Button>
-//             </div>
-//             <span>Don't have an account? <a href='/register'>Register</a></span>
-//         </Box>
-//     </>
-//   )
-// }
-
-// export default UserLogin
-
 import { useState } from 'react';
-import { Box, TextField, Button, FormHelperText } from '@mui/material';
+import { Box, TextField, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosUrl from '../../../config/AxiosConfig';
 import { toast } from 'react-toastify';
@@ -59,7 +27,7 @@ const UserLogin = () => {
     if (!formData.phoneNumberOrEmail.trim()) {
       newErr.phoneNumberOrEmail = 'Phone number or email is required';
     } else if (
-      !/^[\w.+-]+@gmail\.com$/.test(formData.phoneNumberOrEmail) &&
+      !/^[\w.+-]+@gmail\.com$/.test(formData.phoneNumberOrEmail) ||
       !/^0\d{9}$/.test(formData.phoneNumberOrEmail)
     ) {
       newErr.phoneNumberOrEmail = 'Must be a valid Gmail address or 10-digit phone number starting with 0';

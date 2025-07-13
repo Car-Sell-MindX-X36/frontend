@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .login-form {
     display: flex;
     flex-direction: column;
@@ -5,10 +9,6 @@
     justify-content: center;
     width: 100%;
     height: 100vh;
-}
-
-.title {
-    padding: 2rem 0;
 }
 
 .form {
