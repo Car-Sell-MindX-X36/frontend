@@ -104,11 +104,10 @@ const UserRegister = () => {
   return (
     <Box
       component="form"
-      className="flex items-center justify-center min-h-screen bg-gray-100"
+      className="w-full h-screen flex flex-col items-center justify-center"
       onSubmit={handleRegister}
     >
-      <div className="register-form bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
+      <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
           User Register
         </h1>
         <div className="form space-y-4">
@@ -161,7 +160,6 @@ const UserRegister = () => {
             sx={{ width: '50%' }}
             variant="filled"
             required
-            error={!!err.gender}
           >
             <InputLabel id="gender-select-label">Gender</InputLabel>
             <Select
@@ -201,7 +199,6 @@ const UserRegister = () => {
             Register
           </Button>
         </div>
-      </div>
     </Box>
   );
 };

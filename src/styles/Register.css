@@ -21,25 +21,6 @@
     width: 300px;
 }
 
-.role-select {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.role-button {
-    width: 140px;
-}
-
-.role-button-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    gap: 20px;
-}
-
 .gender-dob {
     display: flex;
     align-items: center;
