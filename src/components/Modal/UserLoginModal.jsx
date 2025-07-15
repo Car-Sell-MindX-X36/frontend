@@ -16,6 +16,7 @@ const style = {
 const UserLoginModal = () => {
 
     const [open, setOpen] = useState(false);
+    const [err, setErr] = useState({});
     const [formData, setFormData] = useState({
         indentifier: '',
         password: ''

@@ -123,7 +123,7 @@ const UserRegisterModal = () => {
 
             if (response.status === 201) {
                 toast.success('Registration successful');
-                // handleClose()
+                handleClose()
                 console.log('Registration response:', response.data);
             }
         } catch (error) {
