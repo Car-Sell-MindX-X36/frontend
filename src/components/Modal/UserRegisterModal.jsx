@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Box, Typography, Modal, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
-import axiosUrl from '../../config/AxiosConfig';
+import axiosUrl from '../../../config/AxiosConfig';
 import { toast } from 'react-toastify'
 
 const style = {

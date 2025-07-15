@@ -1,14 +1,14 @@
 import React from 'react'
-import UserLoginModal from '../../components/UserLoginModal'
-import UserRegisterModal from '../../components/UserRegisterModal'
+import Header from '../../components/Header/Header'
 
 const HomePage = () => {
 
   return (
     <>
-      <h1>Home page</h1>
-      <UserLoginModal />
-      <UserRegisterModal />
+      <Header />
+      <div className='flex justify-center items-center h-screen'>
+        <h1 className='text-4xl font-bold'>Welcome to the Home Page</h1>
+      </div>
     </>
   )
 }
