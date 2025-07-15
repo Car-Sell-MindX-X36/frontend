@@ -102,6 +102,7 @@ const UserRegisterModal = () => {
 
             if (response.status === 201) {
                 toast.success('Registration successful');
+                console.log('Registration response:', response.data);
                 navigate('/login');
             }
             } catch (error) {
@@ -113,7 +114,7 @@ const UserRegisterModal = () => {
 
     return (
             <>
-                <Button onClick={handleOpen} className='bg-white' sx={{ border: '2px solid #080808' }}><p className='font-bold text-black'>Register</p></Button>
+                <Button onClick={handleOpen} className='bg-white' sx={{ border: '1.2px solid #080808' }}><p className='font-bold text-black'>Register</p></Button>
                 <Modal open={open} onClose={handleClose} aria-labelledby="register-modal" aria-describedby="click-to-register">
                     <Box onSubmit={handleSubmit} style={style} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#fff' }}>
                         <Typography id="register-modal" variant="h6" component="h2" sx={{ fontSize: '2rem', margin: '1rem 0' }}>
