@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import UserRegister from './pages/User/UserRegister'
 import UserLogin from './pages/User/UserLogin'
 import AdminLogin from './pages/Admin/AdminLogin'
@@ -19,6 +20,7 @@ const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
+      <ToastContainer position='top-right' autoClose={3000} />
     </BrowserRouter>  
   )
 }
