@@ -123,8 +123,8 @@ const UserRegisterModal = () => {
 
             if (response.status === 201) {
                 console.log('Registration response:', response.data);
+                toast.success('Registration successful');
                 setTimeout(() => {
-                    toast.success('Registration successful');
                     handleClose()
                 }, 3000)
             }
