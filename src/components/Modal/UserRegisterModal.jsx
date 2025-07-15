@@ -17,6 +17,8 @@ const style = {
 const UserRegisterModal = () => {
 
     const [open, setOpen] = useState(false);
+    const [err, setErr] = useState({});
+    const [submit, setSubmit] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -29,6 +31,10 @@ const UserRegisterModal = () => {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const today = new Date();
+    const minDate = new Date(today.getFullYear() - 75, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
 
     const validate = () => {
         const newErr = {};
@@ -63,14 +69,28 @@ const UserRegisterModal = () => {
             newErr.phone = 'Phone number must be 10 digits long and start with 0';
         }
 
-        if (!formData.gender) {
+        if (!formData.gender.trim()) {
             newErr.gender = 'Gender is required';
         }
 
-        if (!formData.dob) {
+        // if (!formData.dob) {
+        //     newErr.dob = 'Date of birth is required';
+        // } else if (!/^\d{4}-\d{2}-\d{2}$/.test(formData.dob)) {
+        //     newErr.dob = 'Date of birth must be in YYYY-MM-DD format';
+        // }
+
+        if (!formData.dob.trim()) {
             newErr.dob = 'Date of birth is required';
-        } else if (!/^\d{4}-\d{2}-\d{2}$/.test(formData.dob)) {
-            newErr.dob = 'Date of birth must be in YYYY-MM-DD format';
+        } else {
+            const dobDate = new Date(formData.dob);
+            const ageInDays = (today - dobDate) / (1000 * 60 * 60 * 24);
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(formData.dob) || isNaN(dobDate.getTime())) {
+                newErr.dob = 'Date of birth must be in YYYY-MM-DD format';
+            } else if (ageInDays < 18) {
+                newErr.dob = 'You must be at least 18 years old';
+            } else if (ageInDays < 75) {
+                newErr.dob = 'You must be under 75 years old';
+            }
         }
 
         setErr(newErr);
@@ -80,6 +100,7 @@ const UserRegisterModal = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        setErr((prev) => ({ ...prev, [name]: '' })); // Clear error for the field being edited
     };
 
     const handleSubmit = async (e) => {
@@ -102,49 +123,51 @@ const UserRegisterModal = () => {
 
             if (response.status === 201) {
                 toast.success('Registration successful');
-                handleClose()
+                // handleClose()
                 console.log('Registration response:', response.data);
             }
-            } catch (error) {
-                const errMessage = error.response?.data?.message || 'Registration failed';
-                toast.error(errMessage);
-                console.error('Registration error:', error);
-            }
+        } catch (error) {
+            const errMessage = error.response?.data?.message || 'Registration failed';
+            toast.error(errMessage);
+            console.error('Registration error:', error);
         }
-
-    return (
-            <>
-                <Button onClick={handleOpen} className='bg-white' sx={{ border: '1.2px solid #080808' }}><p className='font-bold text-black'>Register</p></Button>
-                <Modal open={open} onClose={handleClose} aria-labelledby="register-modal" aria-describedby="click-to-register">
-                    <Box component='form' onSubmit={handleSubmit} style={style} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#fff' }}>
-                        <Typography id="register-modal" variant="h6" component="h2" sx={{ fontSize: '2rem', margin: '1rem 0' }}>
-                            User Register
-                        </Typography>
-                        <div className="flex flex-col items-center justify-center gap-[1.25rem] my-[1.25rem]">
-                            <TextField sx={{ width: '300px' }} label='Full Name' variant='filled' name='name' value={formData.name} onChange={handleInputChange} required />
-                            <TextField sx={{ width: '300px' }} label='Email' variant='filled' name='email' type='email' value={formData.email} onChange={handleInputChange} required />
-                            <TextField sx={{ width: '300px' }} label='Password' variant='filled' name='password' type='password' value={formData.password} onChange={handleInputChange} required />
-                            <TextField sx={{ width: '300px' }} label='Confirm Password' variant='filled' name='confirmPassword' type='password' value={formData.confirmPassword} onChange={handleInputChange} required />
-                            <TextField sx={{ width: '300px' }} label='Phone Number' variant='filled' name='phone' value={formData.phone} onChange={handleInputChange} required />
-                            <div className='w-[300px] flex items-center justify-center gap-[1.25rem] my-[0.5rem]'>
-                                <FormControl sx={{ width: '50%' }} variant='filled' required>
-                                    <InputLabel id='gender-select-label'>Gender</InputLabel>
-                                    <Select labelId='gender-select-label' id='gender-select' name='gender' defaultValue='' label='Gender' value={formData.gender} onChange={handleInputChange}>
-                                        <MenuItem value='male'>Male</MenuItem>
-                                        <MenuItem value='female'>Female</MenuItem>
-                                        <MenuItem value='other'>Other</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <TextField label='Date Of Birth' variant='filled' type='date' name='dob' InputLabelProps={{ shrink: true }} sx={{ width: '50%' }} value={formData.dob} onChange={handleInputChange} required />
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-center justify-center w-full gap-[1.25rem] my-[1.25rem]">
-                            <Button variant='contained' sx={{ width: '300px' }}>Register</Button>
-                        </div>
-                    </Box>
-                </Modal>
-            </>
-        )
     }
 
-    export default UserRegisterModal
+    return (
+        <>
+            <Button onClick={handleOpen} className='bg-white' sx={{ border: '1.2px solid #080808' }}><p className='font-bold text-black'>Register</p></Button>
+            <Modal open={open} onClose={handleClose} aria-labelledby="register-modal" aria-describedby="click-to-register">
+                <Box component='form' onSubmit={handleSubmit} style={style} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#fff' }}>
+                    <Typography id="register-modal" variant="h6" component="h2" sx={{ fontSize: '2rem', margin: '1rem 0' }}>
+                        User Register
+                    </Typography>
+                    <div className="flex flex-col items-center justify-center gap-[1.25rem] my-[1.25rem]">
+                        <TextField sx={{ width: '300px' }} label='Full Name' variant='filled' name='name' value={formData.name} onChange={handleInputChange} required />
+                        <TextField sx={{ width: '300px' }} label='Email' variant='filled' name='email' type='email' value={formData.email} onChange={handleInputChange} required />
+                        <TextField sx={{ width: '300px' }} label='Password' variant='filled' name='password' type='password' autoComplete='pasword' value={formData.password} onChange={handleInputChange} required />
+                        <TextField sx={{ width: '300px' }} label='Confirm Password' variant='filled' name='confirmPassword' type='password' autoComplete='confirmPassword' value={formData.confirmPassword} onChange={handleInputChange} required />
+                        <TextField sx={{ width: '300px' }} label='Phone Number' variant='filled' name='phone' value={formData.phone} onChange={handleInputChange} required />
+                        <div className='w-[300px] flex items-center justify-center gap-[1.25rem] my-[0.5rem]'>
+                            <FormControl sx={{ width: '50%' }} variant='filled' required>
+                                <InputLabel id='gender-select-label'>Gender</InputLabel>
+                                <Select labelId='gender-select-label' id='gender-select' name='gender' defaultValue='' label='Gender' value={formData.gender} onChange={handleInputChange}>
+                                    <MenuItem value='male'>Male</MenuItem>
+                                    <MenuItem value='female'>Female</MenuItem>
+                                    <MenuItem value='other'>Other</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <TextField label='Date Of Birth' variant='filled' type='date' name='dob' InputLabelProps={{ shrink: true }} sx={{ width: '50%' }} inputProps={{ min: minDate, max: maxDate }} value={formData.dob} onChange={handleInputChange} required />
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-center justify-center w-full gap-[1.25rem] my-[1.25rem]">
+                        <Button variant='contained' type='submit' disabled={submit} sx={{ width: '300px' }}>
+                            {  submit ? 'Registering...' : 'Register'}
+                        </Button>
+                    </div>
+                </Box>
+            </Modal>
+        </>
+    )
+}
+
+export default UserRegisterModal
