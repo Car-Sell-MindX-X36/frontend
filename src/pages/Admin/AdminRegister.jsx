@@ -128,7 +128,7 @@ const AdminRegister = () => {
 
   return (
     <>
-      <Box className='w-full h-screen flex flex-col items-center justify-center'>
+      <Box component='form' className='w-full h-screen flex flex-col items-center justify-center'>
         <h1 className='text-2xl font-bold text-center text-gray-800 my-3'>Admin Register</h1>
         <div className="register-form flex flex-row items-center justify-center w-full">
           <div className="flex flex-col items-center justify-center px-[1.25rem]">

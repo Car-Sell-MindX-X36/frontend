@@ -68,7 +68,8 @@ const UserLoginModal = () => {
 
             if (response.status === 200) {
                 toast.success('Login successful');
-                navigate('/dashboard'); // Adjust to your app's dashboard route
+                handleClose();
+                console.log('Login response:', response.data);
             }
         } catch (error) {
             const errMessage = error.response?.data?.message || 'Login failed';
@@ -81,7 +82,7 @@ const UserLoginModal = () => {
         <>
             <Button onClick={handleOpen} className='bg-white'><p className='font-bold text-black'>Login</p></Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="login-modal" aria-describedby="click-to-login">
-                <Box onSubmit={handleLogin} style={style} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#fff' }}>
+                <Box component='form' onSubmit={handleLogin} style={style} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#fff' }}>
                     <Typography id="login-modal" variant="h6" component="h2" sx={{ fontSize: '2rem', margin: '1rem 0' }}>
                         User Login
                     </Typography>

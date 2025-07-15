@@ -18,7 +18,7 @@ const AdminLogin = () => {
 
   return (
     <>
-      <Box className='w-full h-screen flex flex-col items-center justify-center'>
+      <Box component='form' className='w-full h-screen flex flex-col items-center justify-center'>
         <h1 className='text-2xl font-bold text-center text-gray-800 my-3'>Admin login</h1>
         {/* <FormGroup>
           <FormLabel id='role-buttons-group-label'>Role</FormLabel>
