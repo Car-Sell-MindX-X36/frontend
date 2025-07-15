@@ -20,7 +20,7 @@ const App = () => {
         <Route path='/' element={<HomePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-      <ToastContainer position='top-right' autoClose={3000} />
+      <ToastContainer position='top-right' autoClose={3000} hideProgressBar closeOnClick pauseOnHover />
     </BrowserRouter>  
   )
 }

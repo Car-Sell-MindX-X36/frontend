@@ -122,9 +122,11 @@ const UserRegisterModal = () => {
             const response = await axiosUrl.post('/customer-registers', customerData);
 
             if (response.status === 201) {
-                toast.success('Registration successful');
-                handleClose()
                 console.log('Registration response:', response.data);
+                setTimeout(() => {
+                    toast.success('Registration successful');
+                    handleClose()
+                }, 3000)
             }
         } catch (error) {
             const errMessage = error.response?.data?.message || 'Registration failed';

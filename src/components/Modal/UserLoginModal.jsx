@@ -69,9 +69,11 @@ const UserLoginModal = () => {
             const response = await axiosUrl.post('/customer-login', loginData);
 
             if (response.status === 200) {
-                toast.success('Login successful');
-                handleClose();
                 console.log('Login response:', response.data);
+                setTimeout(() => {
+                    toast.success('Login successful');
+                    handleClose();
+                }, 3000)
             }
         } catch (error) {
             const errMessage = error.response?.data?.message || 'Login failed';
