@@ -88,7 +88,7 @@ const UserLoginModal = () => {
                     </Typography>
                     <div className="flex flex-col items-center justify-center gap-[1.25rem] my-[1.25rem]">
                         <TextField sx={{ width: '300px' }} label='Email or Phone Number' variant='filled' value={formData.indentifier} onChange={handleInputChange} />
-                        <TextField sx={{ width: '300px' }} label='Password' variant='filled' type='password' value={formData.password} onChange={handleInputChange} />
+                        <TextField sx={{ width: '300px' }} label='Password' variant='filled' type='password' autoComplete='password' value={formData.password} onChange={handleInputChange} />
                     </div>
                     <div className="flex flex-col items-center justify-center w-full gap-[1.25rem] my-[1.25rem]">
                         <span>Forgot password? <Link to='#'>Click here</Link></span>
