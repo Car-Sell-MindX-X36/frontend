@@ -17,6 +17,7 @@ const UserLoginModal = () => {
 
     const [open, setOpen] = useState(false);
     const [err, setErr] = useState({});
+    const [submit, setSubmit] = useState(false);
     const [formData, setFormData] = useState({
         indentifier: '',
         password: ''
@@ -93,7 +94,9 @@ const UserLoginModal = () => {
                     </div>
                     <div className="flex flex-col items-center justify-center w-full gap-[1.25rem] my-[1.25rem]">
                         <span>Forgot password? <Link to='#'>Click here</Link></span>
-                        <Button sx={{ width: '300px' }} variant='contained'>Login</Button>
+                        <Button sx={{ width: '300px' }} type='submit' disabled={submit} variant='contained'>
+                            {  submit ? 'Logging in...' : 'Login'}
+                        </Button>
                     </div>
                 </Box>
             </Modal>
