@@ -6,12 +6,14 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <div className='w-full flex justify-between items-center p-4 bg-gray-800 text-white'>
-        <h1 className='text-3xl'>Autocar</h1>
+    <div className='w-3/4 flex justify-between items-center p-4'>
+        <h1 className='text-3xl font-bold'><Link to='/'>AUTOCAR</Link></h1>
         <nav className='flex gap-6'>
-            <span><Link to='#'>Mua xe</Link></span>
-            <span><Link to='#'>Bán xe</Link></span>
-            <span><Link to='#'>Thuê xe</Link></span>
+            <span className='font-bold'><Link to='#'>Mua xe</Link></span>
+            <p>|</p>
+            <span className='font-bold'><Link to='#'>Bán xe</Link></span>
+            <p>|</p>
+            <span className='font-bold'><Link to='#'>Thuê xe</Link></span>
         </nav>
         <div className='flex items-center gap-4'>
             <UserLoginModal />

@@ -113,7 +113,7 @@ const UserRegisterModal = () => {
 
     return (
             <>
-                <Button variant='contained' onClick={handleOpen}>Register</Button>
+                <Button onClick={handleOpen} className='bg-white' sx={{ border: '2px solid #080808' }}><p className='font-bold text-black'>Register</p></Button>
                 <Modal open={open} onClose={handleClose} aria-labelledby="register-modal" aria-describedby="click-to-register">
                     <Box onSubmit={handleSubmit} style={style} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#fff' }}>
                         <Typography id="register-modal" variant="h6" component="h2" sx={{ fontSize: '2rem', margin: '1rem 0' }}>
@@ -129,10 +129,9 @@ const UserRegisterModal = () => {
                                 <FormControl sx={{ width: '50%' }} variant='filled' required>
                                     <InputLabel id='gender-select-label'>Gender</InputLabel>
                                     <Select labelId='gender-select-label' id='gender-select' name='gender' defaultValue='' label='Gender' value={formData.gender} onChange={handleInputChange}>
-                                        <MenuItem value=''>Select</MenuItem>
-                                        <MenuItem value='Male'>Male</MenuItem>
-                                        <MenuItem value='Female'>Female</MenuItem>
-                                        <MenuItem value='Other'>Other</MenuItem>
+                                        <MenuItem value='male'>Male</MenuItem>
+                                        <MenuItem value='female'>Female</MenuItem>
+                                        <MenuItem value='other'>Other</MenuItem>
                                     </Select>
                                 </FormControl>
                                 <TextField label='Date Of Birth' variant='filled' type='date' name='dob' InputLabelProps={{ shrink: true }} sx={{ width: '50%' }} value={formData.dob} onChange={handleInputChange} required />

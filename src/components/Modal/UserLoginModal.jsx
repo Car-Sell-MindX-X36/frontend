@@ -17,7 +17,7 @@ const UserLoginModal = () => {
 
     const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState({
-        phoneNumberOrEmail: '',
+        indentifier: '',
         password: ''
     })
 
@@ -33,13 +33,13 @@ const UserLoginModal = () => {
     const validate = () => {
         const newErr = {};
 
-        if (!formData.phoneNumberOrEmail.trim()) {
-            newErr.phoneNumberOrEmail = 'Phone number or email is required';
+        if (!formData.indentifier.trim()) {
+            newErr.indentifier = 'Phone number or email is required';
         } else if (
-            !/^[\w.+-]+@gmail\.com$/.test(formData.phoneNumberOrEmail) ||
-            !/^0\d{9}$/.test(formData.phoneNumberOrEmail)
+            !/^[\w.+-]+@gmail\.com$/.test(formData.indentifier) ||
+            !/^0\d{9}$/.test(formData.indentifier)
         ) {
-            newErr.phoneNumberOrEmail = 'Must be a valid Gmail address or 10-digit phone number starting with 0';
+            newErr.indentifier = 'Must be a valid Gmail address or 10-digit phone number starting with 0';
         }
 
         if (!formData.password.trim()) {
@@ -60,7 +60,7 @@ const UserLoginModal = () => {
 
         try {
             const loginData = {
-                phoneNumberOrEmail: formData.phoneNumberOrEmail,
+                indentifier: formData.indentifier,
                 password: formData.password
             };
             console.log('Login Payload:', loginData);
@@ -79,15 +79,15 @@ const UserLoginModal = () => {
 
     return (
         <>
-            <Button variant='contained' onClick={handleOpen}>Login</Button>
+            <Button onClick={handleOpen} className='bg-white'><p className='font-bold text-black'>Login</p></Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="login-modal" aria-describedby="click-to-login">
                 <Box onSubmit={handleLogin} style={style} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#fff' }}>
                     <Typography id="login-modal" variant="h6" component="h2" sx={{ fontSize: '2rem', margin: '1rem 0' }}>
                         User Login
                     </Typography>
                     <div className="flex flex-col items-center justify-center gap-[1.25rem] my-[1.25rem]">
-                        <TextField sx={{ width: '300px' }} label='Email or Phone Number' variant='filled' />
-                        <TextField sx={{ width: '300px' }} label='Password' variant='filled' type='password' />
+                        <TextField sx={{ width: '300px' }} label='Email or Phone Number' variant='filled' value={formData.indentifier} onChange={handleInputChange} />
+                        <TextField sx={{ width: '300px' }} label='Password' variant='filled' type='password' value={formData.password} onChange={handleInputChange} />
                     </div>
                     <div className="flex flex-col items-center justify-center w-full gap-[1.25rem] my-[1.25rem]">
                         <span>Forgot password? <Link to='#'>Click here</Link></span>
