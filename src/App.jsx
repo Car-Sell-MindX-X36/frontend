@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import UserRegister from './pages/User/UserRegister'
 import UserLogin from './pages/User/UserLogin'
 import AdminLogin from './pages/Admin/AdminLogin'

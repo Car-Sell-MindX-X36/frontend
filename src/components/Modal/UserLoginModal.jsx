@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { Button, Box, Typography, Modal, TextField } from '@mui/material'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import axiosUrl from '../../../config/AxiosConfig'
+import { toast } from 'react-toastify'
 
 const style = {
     position: 'absolute',
@@ -19,7 +21,7 @@ const UserLoginModal = () => {
     const [err, setErr] = useState({});
     const [submit, setSubmit] = useState(false);
     const [formData, setFormData] = useState({
-        indentifier: '',
+        identifier: '',
         password: ''
     })
 
@@ -35,13 +37,13 @@ const UserLoginModal = () => {
     const validate = () => {
         const newErr = {};
 
-        if (!formData.indentifier.trim()) {
-            newErr.indentifier = 'Phone number or email is required';
+        if (!formData.identifier.trim()) {
+            newErr.identifier = 'Phone number or email is required';
         } else if (
-            !/^[\w.+-]+@gmail\.com$/.test(formData.indentifier) ||
-            !/^0\d{9}$/.test(formData.indentifier)
+            !/^[\w.+-]+@gmail\.com$/.test(formData.identifier) &&
+            !/^0\d{9}$/.test(formData.identifier)
         ) {
-            newErr.indentifier = 'Must be a valid Gmail address or 10-digit phone number starting with 0';
+            newErr.identifier = 'Must be a valid Gmail address or 10-digit phone number starting with 0';
         }
 
         if (!formData.password.trim()) {
@@ -58,11 +60,15 @@ const UserLoginModal = () => {
         e.preventDefault();
 
         const isValid = validate();
-        if (!isValid) return;
+        if (!isValid) {
+            toast.error('Please fix the errors in the form');
+            return;
+        }
 
+        setSubmit(true);
         try {
             const loginData = {
-                indentifier: formData.indentifier,
+                identifier: formData.identifier,
                 password: formData.password
             };
             console.log('Login Payload:', loginData);
@@ -79,6 +85,8 @@ const UserLoginModal = () => {
             const errMessage = error.response?.data?.message || 'Login failed';
             toast.error(errMessage);
             console.error('Login error:', error);
+        } finally {
+            setSubmit(false);
         }
     };
 
@@ -91,13 +99,13 @@ const UserLoginModal = () => {
                         User Login
                     </Typography>
                     <div className="flex flex-col items-center justify-center gap-[1.25rem] my-[1.25rem]">
-                        <TextField sx={{ width: '300px' }} label='Email or Phone Number' name='identifier' variant='filled' value={formData.indentifier} onChange={handleInputChange} />
-                        <TextField sx={{ width: '300px' }} label='Password' name='password' variant='filled' type='password' autoComplete='password' value={formData.password} onChange={handleInputChange} />
+                        <TextField sx={{ width: '300px' }} label='Email or Phone Number' name='identifier' variant='filled' value={formData.identifier} onChange={handleInputChange} required error={!!err.identifier} helperText={err.identifier} />
+                        <TextField sx={{ width: '300px' }} label='Password' name='password' variant='filled' type='password' autoComplete='password' value={formData.password} onChange={handleInputChange} required error={!!err.password} helperText={err.password} />
                     </div>
                     <div className="flex flex-col items-center justify-center w-full gap-[1.25rem] my-[1.25rem]">
                         <span>Forgot password? <Link to='#'>Click here</Link></span>
                         <Button sx={{ width: '300px' }} type='submit' disabled={submit} variant='contained'>
-                            {  submit ? 'Logging in...' : 'Login'}
+                            {submit ? 'Logging in...' : 'Login'}
                         </Button>
                     </div>
                 </Box>

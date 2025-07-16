@@ -91,7 +91,10 @@ const AdminRegister = () => {
     e.preventDefault()
 
     const isValid = validate()
-    if (!isValid) return;
+    if (!isValid) {
+      toast.error('Please fix the errors in the form');
+      return;
+    }
 
     try {
       const adminData = {
