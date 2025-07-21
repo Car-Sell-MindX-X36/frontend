@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import CreateVehicleForm from '../../pages/Admin/Form/FormAddCar'
 import { useNavigate } from 'react-router-dom'
+import UpdateVehicleFull from '../../pages/Admin/Form/FormUpdateCar'
 
 const AdminSidebar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -126,6 +127,7 @@ const handleMenuItemClick = (path) => {
       {/* Nội dung chính bên phải */}
       <div className='flex-1 p-6 flex flex-col space-y-4'>
         {selectedTab === 'add-car' && <CreateVehicleForm mode='create' />}
+        {selectedTab === 'edit-car' && <UpdateVehicleFull mode='edit' />}
       </div>
     </div>
   )
