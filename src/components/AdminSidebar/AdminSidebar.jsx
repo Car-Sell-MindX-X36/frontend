@@ -1,36 +1,29 @@
 import React, { useState } from 'react'
 import { Button, Menu, MenuItem } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import CreateVehicleForm from '../../pages/Admin/Form/FormAddCar'
-import { useNavigate } from 'react-router-dom'
-import UpdateVehicleFull from '../../pages/Admin/Form/FormUpdateCar'
 
 const AdminSidebar = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedTab, setSelectedTab] = useState(''); // ✅ Theo dõi tab hiện tại
-
-  const open = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
+  const navigate = useNavigate()
 
   const handleDropdownClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleDropdownClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
- const navigate = useNavigate(); // ✅ thêm dòng này ở đầu component
-
-const handleMenuItemClick = (path) => {
-  navigate(`/dashboard/${path}`); // 🧭 chuyển đúng route con
-  handleDropdownClose(); // ✅ đóng menu sau khi bấm
-};
-
+  const handleMenuItemClick = (path) => {
+    navigate(`/dashboard/${path}`)
+    handleDropdownClose()
+  }
 
   const handleLogout = () => {
-    console.log('Logout clicked');
-  };
+    console.log('Logout clicked')
+  }
 
   return (
     <div className='flex'>
@@ -38,20 +31,22 @@ const handleMenuItemClick = (path) => {
       <div className='w-64 min-h-screen bg-gray-100 shadow-lg flex flex-col'>
         {/* Header */}
         <div className='p-6 border-b border-gray-200'>
-          <h1 className='text-3xl font-bold text-gray-800'><Link to='/dashboard'>Admin</Link></h1>
+          <h1 className='text-3xl font-bold text-gray-800'>
+            <Link to='/dashboard'>Admin</Link>
+          </h1>
         </div>
 
         {/* Navigation */}
         <nav className='flex-1 p-4 space-y-4'>
-      <Button
-  component={Link}
-  to='/dashboard/home' // ✅ đường dẫn mới tương ứng với route đã sửa
-  variant='text'
-  fullWidth
-  sx={buttonStyle}
->
-  Dashboard
-</Button>
+          <Button
+            component={Link}
+            to='/dashboard/home'
+            variant='text'
+            fullWidth
+            sx={buttonStyle}
+          >
+            Dashboard
+          </Button>
 
           <Button
             component={Link}
@@ -65,20 +60,21 @@ const handleMenuItemClick = (path) => {
 
           <div>
             <Button
-              variant='text'
-              fullWidth
-              onClick={handleDropdownClick}
-              endIcon={<KeyboardArrowDownIcon />}
-              sx={buttonStyle}
-            >
-              Thêm/Đăng Bán/Thuê Xe
-            </Button>
+  variant='text'
+  fullWidth
+  onClick={handleDropdownClick}
+  endIcon={<KeyboardArrowDownIcon />}
+  sx={buttonStyle} // chỉ dùng style chung, không thêm margin lệch
+>
+  Nghiệp vụ xe
+</Button>
+
             <Menu
               anchorEl={anchorEl}
               open={open}
               onClose={handleDropdownClose}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               sx={menuStyle}
             >
               <MenuItem onClick={() => handleMenuItemClick('add-car')} sx={menuItemStyle}>
@@ -101,7 +97,7 @@ const handleMenuItemClick = (path) => {
 
           <Button
             component={Link}
-            to='/admin/orders'
+            to='/dashboard/orders'
             variant='text'
             fullWidth
             sx={buttonStyle}
@@ -117,17 +113,22 @@ const handleMenuItemClick = (path) => {
             color='error'
             fullWidth
             onClick={handleLogout}
-            sx={{ py: 1.5, fontSize: '1rem', fontWeight: 'bold', textTransform: 'none' }}
+            sx={{
+              py: 1.5,
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              textTransform: 'none',
+              borderRadius: '8px',
+            }}
           >
             Logout
           </Button>
         </div>
       </div>
 
-      {/* Nội dung chính bên phải */}
+      {/* Outlet để hiển thị nội dung theo route con */}
       <div className='flex-1 p-6 flex flex-col space-y-4'>
-        {selectedTab === 'add-car' && <CreateVehicleForm mode='create' />}
-        {selectedTab === 'edit-car' && <UpdateVehicleFull mode='edit' />}
+        {/* Nội dung sẽ hiển thị bằng <Outlet /> trong App.jsx hoặc DashboardLayout */}
       </div>
     </div>
   )

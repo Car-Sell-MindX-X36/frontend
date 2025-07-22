@@ -169,7 +169,7 @@ export default function UpdateVehicleFull() {
           <Typography variant="h5" gutterBottom>🧾 Cập Nhật Xe</Typography>
 
           <Grid container spacing={2} justifyContent="center" sx={{ columnGap: "50px" }}>
-            <Grid item xs={12} md={5} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Grid item xs={12} md={5} sx={{ display: "flex", flexDirection: "column", gap: 2  , mr: 4   }}>
               <Controller name="title" control={control} rules={{ required: "Tiêu đề là bắt buộc" }} render={({ field }) => <TextField label="Tiêu đề" fullWidth {...field} />} />
               <Controller
                 name="description"
@@ -235,7 +235,7 @@ export default function UpdateVehicleFull() {
 
             </Grid>
 
-            <Grid item xs={12} md={6} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Grid item xs={12} md={6} sx={{ display: "flex", flexDirection: "column", gap: 2 , ml: 4 }}>
               <Controller name="price" control={control} render={({ field }) => <TextField label="Giá" fullWidth {...field} />} />
               <Controller name="type" control={control} render={({ field }) => (
                 <FormControl fullWidth>

@@ -12,6 +12,8 @@ import './App.css'
 import AdminLayout from './pages/Admin/AdminLayout'
 import CreateVehicleForm from './pages/Admin/Form/FormAddCar'
 import UpdateVehicleFull from './pages/Admin/Form/FormUpdateCar'
+import DeleteVehicleForm from './pages/Admin/Form/FormDeleteCar'
+import PublishVehicleForm from './pages/Admin/Form/FormSellCar'
 
 const App = () => {
   return (
@@ -26,6 +28,8 @@ const App = () => {
   <Route path='home' element={<Dashboard />} />
   <Route path='add-car' element={<CreateVehicleForm />} />
   <Route path='edit-car' element={<UpdateVehicleFull />} />
+  <Route path='delete-car' element={<DeleteVehicleForm />} />
+  <Route path='sell-car' element={<PublishVehicleForm />} />
   {/* Add other admin routes here */}
 </Route>
 

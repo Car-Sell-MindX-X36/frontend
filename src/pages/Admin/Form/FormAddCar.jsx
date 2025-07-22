@@ -184,12 +184,7 @@ const CreateVehicleForm = () => {
     />
   )}
 />
-
-        </Grid>
-
-        {/* Cột phải */}
-        <Grid item xs={12} md={6} sx={{ gap: 2, display: "flex", flexDirection: "column", minWidth: 320 }}>
-          <Controller
+<Controller
             name="price"
             control={control}
             rules={{ required: "Nhập giá" }}
@@ -197,6 +192,12 @@ const CreateVehicleForm = () => {
               <TextField fullWidth type="number" label="Giá" {...field} error={!!fieldState.error} helperText={fieldState.error?.message} />
             )}
           />
+
+        </Grid>
+
+        {/* Cột phải */}
+        <Grid item xs={12} md={6} sx={{ gap: 2, display: "flex", flexDirection: "column", minWidth: 320 }}>
+          
           <Controller
             name="type"
             control={control}
@@ -250,17 +251,46 @@ const CreateVehicleForm = () => {
               />
             </Box>
           )}
-         <Box>
+        <Box>
   <Button variant="outlined" component="label">
     TẢI ẢNH LÊN
-    <input type="file" hidden multiple accept="image/*" onChange={handleImageChange} />
+    <input
+      type="file"
+      hidden
+      multiple
+      accept="image/*"
+      onChange={handleImageChange}
+    />
   </Button>
+
+  {/* Thông báo số ảnh đã chọn */}
   {images.length > 0 && (
-    <Typography variant="caption" color="textSecondary" mt={1}>
-      Đã chọn {images.length} ảnh
-    </Typography>
+    <>
+      <Typography variant="caption" color="textSecondary" mt={1}>
+        Đã chọn {images.length} ảnh
+      </Typography>
+
+      {/* Preview ảnh được chọn */}
+      <Box sx={{ display: "flex", gap: 2, mt: 1, flexWrap: "wrap" }}>
+        {images.map((file, index) => (
+          <img
+            key={index}
+            src={URL.createObjectURL(file)}
+            alt={`Ảnh ${index + 1}`}
+            style={{
+              width: 100,
+              height: 100,
+              objectFit: "cover",
+              borderRadius: 8,
+              border: "1px solid #ccc",
+            }}
+          />
+        ))}
+      </Box>
+    </>
   )}
 </Box>
+
 
 
         </Grid>
