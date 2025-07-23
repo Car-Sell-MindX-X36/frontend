@@ -10,6 +10,7 @@ import {
   Grid,
 } from "@mui/material";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import axiosUrl from "../../../../config/AxiosConfig";
 
 export default function DeleteVehicleForm() {
@@ -28,6 +29,7 @@ export default function DeleteVehicleForm() {
         setVehicleList(res.data.vehicles || []);
       } catch (err) {
         console.error("❌ Lỗi fetch danh sách xe:", err);
+        toast.error("❌ Không thể tải danh sách xe", { autoClose: 3000 });
       }
     };
     fetchVehicles();
@@ -41,29 +43,40 @@ export default function DeleteVehicleForm() {
 
   const handleDelete = async () => {
     if (!selectedId) {
-      alert("🚫 Vui lòng chọn xe cần xoá!");
+      toast.warn("🚫 Vui lòng chọn xe cần xoá!", { autoClose: 2500 });
       return;
     }
 
-    const confirm = window.confirm("⚠️ Bạn chắc chắn muốn xoá xe này? Hành động này không thể hoàn tác.");
-    if (!confirm) return;
+    toast.info("⚠️ Đang chờ xác nhận xoá...", { autoClose: 1500 });
+
+    const confirmed = window.confirm("⚠️ Bạn chắc chắn muốn xoá xe này? Hành động này không thể hoàn tác.");
+    if (!confirmed) {
+      toast.info("❎ Đã huỷ xoá xe", { autoClose: 2000 });
+      return;
+    }
 
     try {
       setLoading(true);
       const token = localStorage.getItem("accessToken");
-      const res = await axiosUrl.delete(`/admin-vehicles/${selectedId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
 
-      if (res.data?.message) {
-        alert("✅ Đã xoá xe thành công!");
-        setVehicleList(vehicleList.filter((v) => v._id !== selectedId));
-        setSelectedId("");
-        setSelectedVehicle(null);
-      }
+      await toast.promise(
+        axiosUrl.delete(`/admin-vehicles/${selectedId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        {
+          pending: "🔄 Đang xoá xe...",
+          success: "✅ Đã xoá xe thành công!",
+          error: "❌ Lỗi khi xoá xe!",
+        },
+        { autoClose: 3000 }
+      );
+
+      setVehicleList(vehicleList.filter((v) => v._id !== selectedId));
+      setSelectedId("");
+      setSelectedVehicle(null);
     } catch (err) {
       console.error("❌ Lỗi xoá xe:", err);
-      alert(err?.response?.data?.message || "Đã xảy ra lỗi khi xoá xe.");
+      toast.error(err?.response?.data?.message || "❌ Đã xảy ra lỗi khi xoá xe.", { autoClose: 3000 });
     } finally {
       setLoading(false);
     }
@@ -108,13 +121,7 @@ export default function DeleteVehicleForm() {
       {selectedVehicle && (
         <Box sx={{ p: 2, border: "1px solid #ccc", borderRadius: 2, mb: 3 }}>
           <Grid container spacing={4} justifyContent="center">
-            {/* LEFT SIDE */}
-            <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{ mr: 4 , display: "flex", flexDirection: "column", gap: 2 }}
-            >
+            <Grid item xs={12} md={6} sx={{ mr: 4, display: "flex", flexDirection: "column", gap: 2 }}>
               <Typography><strong>Tên xe:</strong> {selectedVehicle.title}</Typography>
               <Typography><strong>Mô tả:</strong> {selectedVehicle.description}</Typography>
               <Typography><strong>Hãng:</strong> {selectedVehicle.brand?.name || selectedVehicle.brand}</Typography>
@@ -123,22 +130,9 @@ export default function DeleteVehicleForm() {
               <Typography><strong>Loại đăng:</strong> {convertType(selectedVehicle.type)}</Typography>
             </Grid>
 
-            {/* RIGHT SIDE */}
-            <Grid
-              item
-              xs={12}
-              md={6}
-              sx={{ ml: 4 , display: "flex", flexDirection: "column", gap: 2 }}
-            >
+            <Grid item xs={12} md={6} sx={{ ml: 4, display: "flex", flexDirection: "column", gap: 2 }}>
               {selectedVehicle.images?.length > 0 && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 2,
-                    mb: 2,
-                  }}
-                >
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2 }}>
                   {selectedVehicle.images.map((img, index) => (
                     <Box
                       key={index}
@@ -158,12 +152,9 @@ export default function DeleteVehicleForm() {
               )}
               <Typography><strong>Giá:</strong> {selectedVehicle.price?.toLocaleString()} VND</Typography>
               <Typography><strong>Tình trạng:</strong> {convertCondition(selectedVehicle.condition)}</Typography>
-             {selectedVehicle.condition === "used" && selectedVehicle.user_percent && (
-  <Typography>
-    <strong>Hao mòn ước tính:</strong> {selectedVehicle.user_percent}%
-  </Typography>
-)}
-
+              {selectedVehicle.condition === "used" && selectedVehicle.user_percent && (
+                <Typography><strong>Hao mòn ước tính:</strong> {selectedVehicle.user_percent}%</Typography>
+              )}
               <Typography><strong>Trạng thái đăng:</strong> {convertStatus(selectedVehicle.status)}</Typography>
             </Grid>
           </Grid>

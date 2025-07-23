@@ -14,6 +14,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axiosUrl from "../../../../config/AxiosConfig";
+import { toast } from "react-toastify";
 
 export default function PublishVehicleForm() {
   const [vehicleList, setVehicleList] = useState([]);
@@ -56,6 +57,7 @@ export default function PublishVehicleForm() {
       });
       setVehicleList(res.data.vehicles || []);
     } catch (err) {
+      toast.error("❌ Lỗi fetch danh sách xe trong kho");
       console.error("❌ Lỗi fetch draft vehicles:", err);
     }
   };
@@ -69,6 +71,7 @@ export default function PublishVehicleForm() {
       const brandList = Array.isArray(res.data.brands) ? res.data.brands : [];
       setBrands(brandList);
     } catch (err) {
+      toast.error("❌ Lỗi fetch danh sách hãng xe");
       console.error("❌ Lỗi fetch hãng xe:", err);
     }
   };
@@ -101,6 +104,7 @@ export default function PublishVehicleForm() {
           status: data.status,
         });
       } catch (err) {
+        toast.error("❌ Lỗi fetch chi tiết xe");
         console.error("❌ Lỗi fetch chi tiết xe:", err);
       }
     };
@@ -138,13 +142,13 @@ export default function PublishVehicleForm() {
       });
 
       if (res.data?.vehicle) {
-        alert("🚀 Đăng bán xe thành công!");
+         toast.success("🚀 Đăng bán xe thành công!");
         setVehicleData(res.data.vehicle);
         setSelectedImages([]);
       }
     } catch (err) {
       console.error("❌ Lỗi đăng bán xe:", err);
-      alert(err?.response?.data?.message || "Lỗi đăng bán xe");
+      toast.error(err?.response?.data?.message || "❌ Lỗi khi đăng bán xe", { autoClose: 3000 });
     } finally {
       setLoading(false);
     }

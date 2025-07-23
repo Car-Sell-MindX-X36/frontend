@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify"; // ✅ Thêm toast
 import axiosUrl from "../../../../config/AxiosConfig.js";
 
 const defaultValues = {
@@ -41,7 +42,6 @@ const CreateVehicleForm = () => {
   const [images, setImages] = useState([]);
   const condition = useWatch({ control, name: "condition" });
 
-  // 🔁 Fetch brands
   useEffect(() => {
     const fetchBrands = async () => {
       try {
@@ -60,20 +60,17 @@ const CreateVehicleForm = () => {
     fetchBrands();
   }, []);
 
-  // ⛽ Reset used_percent nếu xe mới
   useEffect(() => {
     if (condition === "new") {
       setValue("used_percent", 60);
     }
   }, [condition, setValue]);
 
-  // 🖼️ Thêm ảnh
   const handleImageChange = (e) => {
     const selected = Array.from(e.target.files);
     setImages((prev) => [...prev, ...selected]);
   };
 
-  // ✅ Submit form
   const onSubmit = async (data) => {
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
@@ -91,12 +88,20 @@ const CreateVehicleForm = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      alert("🚗 Xe đã tạo thành công!");
+
+      toast.success("🚗 Xe đã tạo thành công!", {
+        autoClose: 3000,
+        position: "top-right",
+      });
+
       reset();
       setImages([]);
     } catch (err) {
       console.error("❌ Tạo xe thất bại:", err);
-      alert("❌ Lỗi khi tạo xe");
+      toast.error("❌ Lỗi khi tạo xe", {
+        autoClose: 3000,
+        position: "top-right",
+      });
     }
   };
 
@@ -105,13 +110,7 @@ const CreateVehicleForm = () => {
       <Typography variant="h5" gutterBottom>
         🧾 Thêm Xe
       </Typography>
-      <Grid
-        container
-        spacing={2}
-        justifyContent="center"
-        alignItems="flex-start"
-        sx={{ columnGap: "50px" }}
-      >
+      <Grid container spacing={2} justifyContent="center" alignItems="flex-start" sx={{ columnGap: "50px" }}>
         {/* Cột trái */}
         <Grid item xs={12} md={5} sx={{ gap: 2, display: "flex", flexDirection: "column", minWidth: 320 }}>
           <Controller
@@ -134,57 +133,52 @@ const CreateVehicleForm = () => {
             )}
           />
           <Controller
-  name="brand"
-  control={control}
-  rules={{ required: "Chọn hãng xe" }}
-  render={({ field, fieldState }) => (
-    <FormControl fullWidth error={!!fieldState.error}>
-      <InputLabel>Hãng xe</InputLabel>
-      <Select
-        {...field}
-        label="Hãng xe"
-        MenuProps={{
-          PaperProps: {
-            style: {
-              maxHeight: 48 * 5 + 8, // 👈 hạn chế dropdown cao quá
-              width: 250,
-            },
-          },
-        }}
-      >
-        {brands.map((b) => (
-          <MenuItem key={b._id} value={b._id}>
-            {b.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  )}
-/>
-
+            name="brand"
+            control={control}
+            rules={{ required: "Chọn hãng xe" }}
+            render={({ field, fieldState }) => (
+              <FormControl fullWidth error={!!fieldState.error}>
+                <InputLabel>Hãng xe</InputLabel>
+                <Select
+                  {...field}
+                  label="Hãng xe"
+                  MenuProps={{
+                    PaperProps: {
+                      style: { maxHeight: 48 * 5 + 8, width: 250 },
+                    },
+                  }}
+                >
+                  {brands.map((b) => (
+                    <MenuItem key={b._id} value={b._id}>
+                      {b.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          />
           <Controller name="model" control={control} render={({ field }) => <TextField fullWidth label="Model" {...field} />} />
           <Controller
-  name="year"
-  control={control}
-  rules={{
-  required: "Nhập năm sản xuất",
-  min: { value: 1986, message: "Năm thấp nhất là 1986" },
-  max: { value: new Date().getFullYear(), message: "Không vượt quá năm hiện tại" }
-}}
-
-  render={({ field, fieldState }) => (
-    <TextField
-      fullWidth
-      type="number"
-      label="Năm sản xuất"
-      inputProps={{ min: 1986, max: new Date().getFullYear() }}
-      {...field}
-      error={!!fieldState.error}
-      helperText={fieldState.error?.message}
-    />
-  )}
-/>
-<Controller
+            name="year"
+            control={control}
+            rules={{
+              required: "Nhập năm sản xuất",
+              min: { value: 1986, message: "Năm thấp nhất là 1986" },
+              max: { value: new Date().getFullYear(), message: "Không vượt quá năm hiện tại" }
+            }}
+            render={({ field, fieldState }) => (
+              <TextField
+                fullWidth
+                type="number"
+                label="Năm sản xuất"
+                inputProps={{ min: 1986, max: new Date().getFullYear() }}
+                {...field}
+                error={!!fieldState.error}
+                helperText={fieldState.error?.message}
+              />
+            )}
+          />
+          <Controller
             name="price"
             control={control}
             rules={{ required: "Nhập giá" }}
@@ -192,12 +186,10 @@ const CreateVehicleForm = () => {
               <TextField fullWidth type="number" label="Giá" {...field} error={!!fieldState.error} helperText={fieldState.error?.message} />
             )}
           />
-
         </Grid>
 
         {/* Cột phải */}
         <Grid item xs={12} md={6} sx={{ gap: 2, display: "flex", flexDirection: "column", minWidth: 320 }}>
-          
           <Controller
             name="type"
             control={control}
@@ -251,52 +243,46 @@ const CreateVehicleForm = () => {
               />
             </Box>
           )}
-        <Box>
-  <Button variant="outlined" component="label">
-    TẢI ẢNH LÊN
-    <input
-      type="file"
-      hidden
-      multiple
-      accept="image/*"
-      onChange={handleImageChange}
-    />
-  </Button>
+          <Box>
+            <Button variant="outlined" component="label">
+              TẢI ẢNH LÊN
+              <input
+                type="file"
+                hidden
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </Button>
 
-  {/* Thông báo số ảnh đã chọn */}
-  {images.length > 0 && (
-    <>
-      <Typography variant="caption" color="textSecondary" mt={1}>
-        Đã chọn {images.length} ảnh
-      </Typography>
-
-      {/* Preview ảnh được chọn */}
-      <Box sx={{ display: "flex", gap: 2, mt: 1, flexWrap: "wrap" }}>
-        {images.map((file, index) => (
-          <img
-            key={index}
-            src={URL.createObjectURL(file)}
-            alt={`Ảnh ${index + 1}`}
-            style={{
-              width: 100,
-              height: 100,
-              objectFit: "cover",
-              borderRadius: 8,
-              border: "1px solid #ccc",
-            }}
-          />
-        ))}
-      </Box>
-    </>
-  )}
-</Box>
-
-
-
+            {images.length > 0 && (
+              <>
+                <Typography variant="caption" color="textSecondary" mt={1}>
+                  Đã chọn {images.length} ảnh
+                </Typography>
+                <Box sx={{ display: "flex", gap: 2, mt: 1, flexWrap: "wrap" }}>
+                  {images.map((file, index) => (
+                    <img
+                      key={index}
+                      src={URL.createObjectURL(file)}
+                      alt={`Ảnh ${index + 1}`}
+                      style={{
+                        width: 100,
+                        height: 100,
+                        objectFit: "cover",
+                        borderRadius: 8,
+                        border: "1px solid #ccc",
+                      }}
+                    />
+                  ))}
+                </Box>
+              </>
+            )}
+          </Box>
         </Grid>
       </Grid>
 
-      {/* Nút submit */}
+      {/* Submit */}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <Button
           type="submit"

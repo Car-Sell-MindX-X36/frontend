@@ -14,6 +14,7 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
 import axiosUrl from "../../../../config/AxiosConfig.js";
+import { toast } from "react-toastify";
 
 export default function UpdateVehicleFull() {
   const [vehicleList, setVehicleList] = useState([]);
@@ -57,6 +58,7 @@ export default function UpdateVehicleFull() {
         });
         setVehicleList(res.data.vehicles || []);
       } catch (err) {
+        toast.error("❌ Lỗi fetch danh sách xe", { autoClose: 3000 });
         console.error("❌ Lỗi fetch danh sách xe:", err);
       }
     };
@@ -72,6 +74,7 @@ export default function UpdateVehicleFull() {
         });
         setBrands(Array.isArray(res.data.brands) ? res.data.brands : []);
       } catch (err) {
+        toast.error("❌ Lỗi fetch danh sách hãng xe", { autoClose: 3000 });
         console.error("❌ Lỗi fetch brands:", err);
       }
     };
@@ -101,6 +104,7 @@ export default function UpdateVehicleFull() {
           status: data.status,
         });
       } catch (err) {
+        toast.error("❌ Lỗi lấy thông tin xe", { autoClose: 3000 });
         console.error("❌ Lỗi lấy xe:", err);
       }
     };
@@ -134,13 +138,13 @@ export default function UpdateVehicleFull() {
       });
 
       if (res.data?.vehicle) {
-        alert("✅ Đã cập nhật xe thành công!");
+        toast.success("🚗 Cập nhật xe thành công!", { autoClose: 3000 });
         setVehicleData(res.data.vehicle);
         setSelectedImages([]); // Reset preview
       }
     } catch (err) {
       console.error("❌ Lỗi cập nhật xe:", err);
-      alert(err?.response?.data?.message || "Lỗi cập nhật xe");
+      toast.error(err?.response?.data?.message || "❌ Lỗi cập nhật xe", { autoClose: 3000 });
     } finally {
       setLoading(false);
     }
