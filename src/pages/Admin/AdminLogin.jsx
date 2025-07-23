@@ -12,6 +12,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import axiosUrl from '../../../config/AxiosConfig.js';
 import '../../styles/Login.css';
+import { toast } from 'react-toastify';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -40,11 +41,11 @@ const AdminLogin = () => {
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
 
-      alert('✅ Đăng nhập thành công!');
-      navigate('/dashboard'); // hoặc route nào đó sau đăng nhập
+      toast.success("✅ Đăng nhập thành công!", { autoClose: 3000 });
+      navigate('/dashboard/home'); // hoặc route nào đó sau đăng nhập
     } catch (error) {
       console.error('❌ Lỗi đăng nhập:', error?.response?.data || error.message);
-      alert(error?.response?.data?.message || 'Đăng nhập thất bại!');
+      toast.error(error?.response?.data?.message || '❌ Đăng nhập thất bại!', { autoClose: 3000 });
     }
   };
 

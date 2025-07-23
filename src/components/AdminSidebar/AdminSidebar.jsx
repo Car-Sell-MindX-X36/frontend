@@ -1,29 +1,32 @@
-import React, { useState } from 'react'
-import { Button, Menu, MenuItem } from '@mui/material'
-import { Link, useNavigate } from 'react-router-dom'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import React, { useState } from 'react';
+import { Button, Menu, MenuItem } from '@mui/material';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const AdminSidebar = () => {
-  const [anchorEl, setAnchorEl] = useState(null)
-  const open = Boolean(anchorEl)
-  const navigate = useNavigate()
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+  const location = useLocation(); // ✅ Dùng để biết tab nào đang active
 
   const handleDropdownClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleDropdownClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const handleMenuItemClick = (path) => {
-    navigate(`/dashboard/${path}`)
-    handleDropdownClose()
-  }
+    navigate(`/dashboard/${path}`);
+    handleDropdownClose();
+  };
 
   const handleLogout = () => {
-    console.log('Logout clicked')
-  }
+    console.log('Logout clicked');
+  };
+
+  const isActive = (path) => location.pathname === `/dashboard/${path}`;
 
   return (
     <div className='flex'>
@@ -43,7 +46,10 @@ const AdminSidebar = () => {
             to='/dashboard/home'
             variant='text'
             fullWidth
-            sx={buttonStyle}
+            sx={{
+              ...buttonStyle,
+              ...(isActive('home') && activeStyle),
+            }}
           >
             Dashboard
           </Button>
@@ -53,21 +59,33 @@ const AdminSidebar = () => {
             to='/dashboard/revenue'
             variant='text'
             fullWidth
-            sx={buttonStyle}
+            sx={{
+              ...buttonStyle,
+              ...(isActive('revenue') && activeStyle),
+            }}
           >
             Doanh Thu
           </Button>
 
           <div>
             <Button
-  variant='text'
-  fullWidth
-  onClick={handleDropdownClick}
-  endIcon={<KeyboardArrowDownIcon />}
-  sx={buttonStyle} // chỉ dùng style chung, không thêm margin lệch
->
-  Nghiệp vụ xe
-</Button>
+              variant='text'
+              fullWidth
+              onClick={handleDropdownClick}
+              endIcon={<KeyboardArrowDownIcon />}
+              sx={{
+                ...buttonStyle,
+                ...(location.pathname.includes('/dashboard/add-car') ||
+                location.pathname.includes('/dashboard/edit-car') ||
+                location.pathname.includes('/dashboard/delete-car') ||
+                location.pathname.includes('/dashboard/rent-car') ||
+                location.pathname.includes('/dashboard/sell-car')
+                  ? activeStyle
+                  : {}),
+              }}
+            >
+              Nghiệp vụ xe
+            </Button>
 
             <Menu
               anchorEl={anchorEl}
@@ -77,19 +95,49 @@ const AdminSidebar = () => {
               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               sx={menuStyle}
             >
-              <MenuItem onClick={() => handleMenuItemClick('add-car')} sx={menuItemStyle}>
+              <MenuItem
+                onClick={() => handleMenuItemClick('add-car')}
+                sx={{
+                  ...menuItemStyle,
+                  ...(isActive('add-car') && activeStyle),
+                }}
+              >
                 Thêm xe
               </MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick('edit-car')} sx={menuItemStyle}>
+              <MenuItem
+                onClick={() => handleMenuItemClick('edit-car')}
+                sx={{
+                  ...menuItemStyle,
+                  ...(isActive('edit-car') && activeStyle),
+                }}
+              >
                 Sửa xe
               </MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick('delete-car')} sx={menuItemStyle}>
+              <MenuItem
+                onClick={() => handleMenuItemClick('delete-car')}
+                sx={{
+                  ...menuItemStyle,
+                  ...(isActive('delete-car') && activeStyle),
+                }}
+              >
                 Xóa xe
               </MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick('rent-car')} sx={menuItemStyle}>
+              <MenuItem
+                onClick={() => handleMenuItemClick('rent-car')}
+                sx={{
+                  ...menuItemStyle,
+                  ...(isActive('rent-car') && activeStyle),
+                }}
+              >
                 Đăng thuê xe
               </MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick('sell-car')} sx={menuItemStyle}>
+              <MenuItem
+                onClick={() => handleMenuItemClick('sell-car')}
+                sx={{
+                  ...menuItemStyle,
+                  ...(isActive('sell-car') && activeStyle),
+                }}
+              >
                 Đăng bán xe
               </MenuItem>
             </Menu>
@@ -100,7 +148,10 @@ const AdminSidebar = () => {
             to='/dashboard/orders'
             variant='text'
             fullWidth
-            sx={buttonStyle}
+            sx={{
+              ...buttonStyle,
+              ...(isActive('orders') && activeStyle),
+            }}
           >
             Đơn hàng
           </Button>
@@ -131,8 +182,8 @@ const AdminSidebar = () => {
         {/* Nội dung sẽ hiển thị bằng <Outlet /> trong App.jsx hoặc DashboardLayout */}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const buttonStyle = {
   justifyContent: 'flex-start',
@@ -146,7 +197,12 @@ const buttonStyle = {
     color: '#2563eb',
   },
   borderRadius: '8px',
-}
+};
+
+const activeStyle = {
+  borderBottom: '2px solid #2563eb',
+  backgroundColor: '#e0f2fe',
+};
 
 const menuStyle = {
   '& .MuiPaper-root': {
@@ -155,7 +211,7 @@ const menuStyle = {
     borderRadius: '8px',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
   },
-}
+};
 
 const menuItemStyle = {
   fontSize: '1rem',
@@ -164,6 +220,6 @@ const menuItemStyle = {
     backgroundColor: '#dbeafe',
     color: '#2563eb',
   },
-}
+};
 
-export default AdminSidebar
+export default AdminSidebar;
